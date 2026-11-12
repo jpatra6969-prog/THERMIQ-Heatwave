@@ -6,21 +6,13 @@ import {
   Download, 
   FileText, 
   Printer, 
-  Calendar, 
   TrendingUp, 
-  Activity, 
-  Thermometer, 
-  Sun, 
-  ShieldCheck,
-  RefreshCw,
-  Search
+  Thermometer 
 } from "lucide-react";
 import { 
   ResponsiveContainer, 
   LineChart, 
   Line, 
-  BarChart, 
-  Bar, 
   XAxis, 
   YAxis, 
   Tooltip, 
@@ -42,8 +34,6 @@ export default function AnalyticsPage() {
     avg_confidence: 97.2,
     total_samples: 142,
   });
-  const [timeRange, setTimeRange] = useState<"1H" | "6H" | "24H" | "ALL">("1H");
-  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchAnalytics = async () => {
     try {
@@ -94,14 +84,6 @@ export default function AnalyticsPage() {
     iaq: item.iaq_index,
   }));
 
-  const filteredHistory = history.filter((row) => {
-    if (!searchTerm) return true;
-    return (
-      row.timestamp?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      row.risk_level?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
-
   const exportJSON = () => {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(history, null, 2));
     const downloadAnchor = document.createElement("a");
@@ -116,16 +98,16 @@ export default function AnalyticsPage() {
     <div className="space-y-8">
       
       {/* Top Banner & Export Actions */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 p-6 rounded-2xl glass-panel border-cyan-500/30">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 p-6 rounded-none bg-[#0D141F] border border-[#1D2F40] shadow-lg shadow-black/40">
         <div>
-          <div className="flex items-center gap-2 text-cyan-400 text-xs font-mono uppercase tracking-widest">
+          <div className="flex items-center gap-2 text-[#00D9E8] text-xs font-mono uppercase tracking-widest">
             <BarChart3 className="w-4 h-4" />
             Historical Diagnostics & Compliance Auditing
           </div>
-          <h1 className="text-3xl font-extrabold text-white mt-1">
+          <h1 className="text-3xl font-extrabold text-[#FAF5EB] mt-1">
             Analytics, Microclimate Trends & Reports
           </h1>
-          <p className="text-sm text-slate-400 mt-1 max-w-2xl">
+          <p className="text-sm text-[#D0D9E2] mt-1 max-w-2xl">
             Audit-ready thermal risk records exported directly from the SQLite persistent engine.
           </p>
         </div>
@@ -135,7 +117,7 @@ export default function AnalyticsPage() {
           <a
             href={`${apiUrl}/api/analytics/export/csv`}
             download="heatguard_x_report.csv"
-            className="px-4 py-2.5 rounded-xl font-bold text-xs font-mono bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all flex items-center gap-2"
+            className="px-4 py-2.5 rounded-none font-bold text-xs font-mono bg-[#00D9E8] text-[#06090E] hover:bg-[#00c5d2] transition-all flex items-center gap-2 shadow-md"
           >
             <Download className="w-4 h-4" />
             <span>Download CSV Report</span>
@@ -143,7 +125,7 @@ export default function AnalyticsPage() {
 
           <button
             onClick={exportJSON}
-            className="px-4 py-2.5 rounded-xl font-bold text-xs font-mono bg-slate-900 border border-cyan-500/40 text-cyan-300 hover:bg-slate-800 transition-all flex items-center gap-2"
+            className="px-4 py-2.5 rounded-none font-bold text-xs font-mono bg-[#1E252E] border border-[#1D2F40] text-[#00D9E8] hover:bg-[#14202B] transition-all flex items-center gap-2"
           >
             <FileText className="w-4 h-4" />
             <span>Export JSON</span>
@@ -151,7 +133,7 @@ export default function AnalyticsPage() {
 
           <button
             onClick={() => window.print()}
-            className="px-4 py-2.5 rounded-xl font-bold text-xs font-mono bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition-all flex items-center gap-2"
+            className="px-4 py-2.5 rounded-none font-bold text-xs font-mono bg-[#1E252E] border border-[#1D2F40] text-[#D0D9E2] hover:text-[#FAF5EB] transition-all flex items-center gap-2"
           >
             <Printer className="w-4 h-4" />
             <span>Print PDF</span>
@@ -159,51 +141,29 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* 4 KPI Aggregate Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Primary KPI Aggregate Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         
-        <div className="p-5 rounded-2xl glass-panel border-cyan-500/20 space-y-1">
-          <span className="text-xs font-mono uppercase text-slate-400 flex items-center justify-between">
+        <div className="p-5 rounded-none bg-[#0D141F] border border-[#1D2F40] space-y-1 shadow-lg shadow-black/40">
+          <span className="text-xs font-mono uppercase text-[#D0D9E2] flex items-center justify-between">
             Peak Heat Index
-            <TrendingUp className="w-4 h-4 text-red-400" />
+            <TrendingUp className="w-4 h-4 text-[#EF233C]" />
           </span>
-          <div className="text-2xl sm:text-3xl font-black font-mono text-red-400 mt-1">
+          <div className="text-3xl sm:text-4xl font-black font-mono text-[#EF233C] mt-1">
             {formatTemp(summary.max_heat_index, isFahrenheit)}
           </div>
-          <p className="text-[11px] text-slate-500">Historical Maximum</p>
+          <p className="text-[11px] font-mono text-[#D0D9E2]">Historical Maximum</p>
         </div>
 
-        <div className="p-5 rounded-2xl glass-panel border-cyan-500/20 space-y-1">
-          <span className="text-xs font-mono uppercase text-slate-400 flex items-center justify-between">
+        <div className="p-5 rounded-none bg-[#0D141F] border border-[#1D2F40] space-y-1 shadow-lg shadow-black/40">
+          <span className="text-xs font-mono uppercase text-[#D0D9E2] flex items-center justify-between">
             Average Ambient Temp
-            <Thermometer className="w-4 h-4 text-cyan-400" />
+            <Thermometer className="w-4 h-4 text-[#00D9E8]" />
           </span>
-          <div className="text-2xl sm:text-3xl font-black font-mono text-cyan-300 mt-1">
+          <div className="text-3xl sm:text-4xl font-black font-mono text-[#FAF5EB] mt-1">
             {formatTemp(summary.avg_temp, isFahrenheit)}
           </div>
-          <p className="text-[11px] text-slate-500">Facility Mean Temperature</p>
-        </div>
-
-        <div className="p-5 rounded-2xl glass-panel border-cyan-500/20 space-y-1">
-          <span className="text-xs font-mono uppercase text-slate-400 flex items-center justify-between">
-            Mean Relative Humidity
-            <Activity className="w-4 h-4 text-sky-400" />
-          </span>
-          <div className="text-2xl sm:text-3xl font-black font-mono text-sky-400 mt-1">
-            {summary.avg_humidity ?? 62.5}%
-          </div>
-          <p className="text-[11px] text-slate-500">BME280 Vapor Mean</p>
-        </div>
-
-        <div className="p-5 rounded-2xl glass-panel border-cyan-500/20 space-y-1">
-          <span className="text-xs font-mono uppercase text-slate-400 flex items-center justify-between">
-            Mean Sensor Confidence
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-          </span>
-          <div className="text-2xl sm:text-3xl font-black font-mono text-emerald-400 mt-1">
-            {summary.avg_confidence ?? 97.2}%
-          </div>
-          <p className="text-[11px] text-slate-500">Tri-Transducer Health</p>
+          <p className="text-[11px] font-mono text-[#D0D9E2]">Facility Mean Temperature</p>
         </div>
 
       </div>
@@ -212,32 +172,32 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* Chart 1: Temperature & Heat Index Correlation */}
-        <div className="glass-panel rounded-3xl p-6 border-cyan-500/30 space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="rounded-none bg-[#0D141F] border border-[#1D2F40] p-6 space-y-4 shadow-lg shadow-black/40">
+          <div className="flex items-center justify-between border-b border-[#1D2F40] pb-3">
             <div>
-              <h3 className="text-base font-bold text-white">Heat Index vs Ambient Curve</h3>
-              <p className="text-xs text-slate-400">Rothfusz Index vs BME280 & DS18B20</p>
+              <h3 className="text-base font-bold text-[#FAF5EB]">Heat Index vs Ambient Curve</h3>
+              <p className="text-xs text-[#D0D9E2]">Rothfusz Index vs BME280 & DS18B20</p>
             </div>
-            <span className="text-xs font-mono text-cyan-400">Timeframe: Recent</span>
+            <span className="text-xs font-mono text-[#00D9E8]">Timeframe: Recent</span>
           </div>
 
           <div className="h-64 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="time" stroke="#64748b" tick={{ fontSize: 11, fill: "#64748b" }} />
-                <YAxis stroke="#64748b" tick={{ fontSize: 11, fill: "#64748b" }} domain={['auto', 'auto']} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#14202B" vertical={false} />
+                <XAxis dataKey="time" stroke="#D0D9E2" tick={{ fontSize: 11, fill: "#D0D9E2" }} axisLine={{ stroke: "#1D2F40" }} />
+                <YAxis stroke="#D0D9E2" tick={{ fontSize: 11, fill: "#D0D9E2" }} axisLine={{ stroke: "#1D2F40" }} domain={['auto', 'auto']} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#0b1120",
-                    borderColor: "#06b6d4",
-                    borderRadius: "0.75rem",
-                    color: "#f8fafc",
+                    backgroundColor: "#0D141F",
+                    borderColor: "#1D2F40",
+                    borderRadius: "0px",
+                    color: "#FAF5EB",
                   }}
                 />
                 <Legend />
-                <Line type="monotone" dataKey="heat_index" stroke="#ef4444" strokeWidth={2.5} name="Heat Index (°C)" />
-                <Line type="monotone" dataKey="temp" stroke="#06b6d4" strokeWidth={2} name="Ambient Temp (°C)" />
+                <Line type="monotone" dataKey="heat_index" stroke="#D96226" strokeWidth={2.5} name="Heat Index (°C)" />
+                <Line type="monotone" dataKey="temp" stroke="#00D9E8" strokeWidth={2} name="Ambient Temp (°C)" />
                 <Line type="monotone" dataKey="probe" stroke="#10b981" strokeWidth={1.8} strokeDasharray="4 4" name="DS18B20 Probe (°C)" />
               </LineChart>
             </ResponsiveContainer>
@@ -245,31 +205,31 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Chart 2: Solar Lux vs Infrared Surface Temp */}
-        <div className="glass-panel rounded-3xl p-6 border-cyan-500/30 space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="rounded-none bg-[#0D141F] border border-[#1D2F40] p-6 space-y-4 shadow-lg shadow-black/40">
+          <div className="flex items-center justify-between border-b border-[#1D2F40] pb-3">
             <div>
-              <h3 className="text-base font-bold text-white">Solar Irradiance vs IR Surface Heat</h3>
-              <p className="text-xs text-slate-400">VEML7700 Solar Flux vs MLX90614 Infrared</p>
+              <h3 className="text-base font-bold text-[#FAF5EB]">Solar Irradiance vs IR Surface Heat</h3>
+              <p className="text-xs text-[#D0D9E2]">VEML7700 Solar Flux vs MLX90614 Infrared</p>
             </div>
-            <span className="text-xs font-mono text-yellow-400">Radiant Flux</span>
+            <span className="text-xs font-mono text-[#D96226]">Radiant Flux</span>
           </div>
 
           <div className="h-64 w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                <XAxis dataKey="time" stroke="#64748b" tick={{ fontSize: 11, fill: "#64748b" }} />
-                <YAxis stroke="#64748b" tick={{ fontSize: 11, fill: "#64748b" }} domain={['auto', 'auto']} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#14202B" vertical={false} />
+                <XAxis dataKey="time" stroke="#D0D9E2" tick={{ fontSize: 11, fill: "#D0D9E2" }} axisLine={{ stroke: "#1D2F40" }} />
+                <YAxis stroke="#D0D9E2" tick={{ fontSize: 11, fill: "#D0D9E2" }} axisLine={{ stroke: "#1D2F40" }} domain={['auto', 'auto']} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#0b1120",
-                    borderColor: "#06b6d4",
-                    borderRadius: "0.75rem",
-                    color: "#f8fafc",
+                    backgroundColor: "#0D141F",
+                    borderColor: "#1D2F40",
+                    borderRadius: "0px",
+                    color: "#FAF5EB",
                   }}
                 />
                 <Legend />
-                <Line type="monotone" dataKey="ir" stroke="#f59e0b" strokeWidth={2.5} name="Surface IR (°C)" />
+                <Line type="monotone" dataKey="ir" stroke="#D96226" strokeWidth={2.5} name="Surface IR (°C)" />
                 <Line type="monotone" dataKey="humidity" stroke="#3b82f6" strokeWidth={2} name="Humidity (%)" />
               </LineChart>
             </ResponsiveContainer>
@@ -278,90 +238,6 @@ export default function AnalyticsPage() {
 
       </div>
 
-      {/* Historical Telemetry Log Table */}
-      <div className="glass-panel rounded-3xl p-6 border-cyan-500/30 space-y-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-          <div>
-            <h3 className="text-lg font-bold text-white">Historical Telemetry Stream Records</h3>
-            <p className="text-xs text-slate-400">Raw multi-transducer packet logs stored in SQLite</p>
-          </div>
-
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <div className="relative flex-1 sm:w-64">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-              <input
-                type="text"
-                placeholder="Filter by time or risk..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400"
-              />
-            </div>
-
-            <button
-              onClick={fetchAnalytics}
-              className="p-2 rounded-xl bg-slate-900 border border-slate-800 hover:text-cyan-400 text-slate-400 transition-colors"
-              title="Refresh Records"
-            >
-              <RefreshCw className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* Scrollable Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs font-mono">
-            <thead className="bg-slate-950/80 text-slate-400 uppercase tracking-wider border-b border-slate-800">
-              <tr>
-                <th className="py-3 px-3">Timestamp</th>
-                <th className="py-3 px-3">Ambient (°C)</th>
-                <th className="py-3 px-3">Humidity (%)</th>
-                <th className="py-3 px-3">Heat Index (°C)</th>
-                <th className="py-3 px-3">Probe DS18</th>
-                <th className="py-3 px-3">Surface IR</th>
-                <th className="py-3 px-3">Solar Lux</th>
-                <th className="py-3 px-3">Confidence</th>
-                <th className="py-3 px-3">Risk Level</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800/60">
-              {filteredHistory.length > 0 ? (
-                filteredHistory.slice(0, 15).map((row, idx) => (
-                  <tr key={idx} className="hover:bg-slate-900/50 transition-colors">
-                    <td className="py-2.5 px-3 text-slate-300">
-                      {row.timestamp?.split("T")[1]?.slice(0, 8) || "00:00:00"}
-                    </td>
-                    <td className="py-2.5 px-3 text-cyan-300 font-bold">{row.temp_ambient?.toFixed(1)}°C</td>
-                    <td className="py-2.5 px-3 text-sky-300">{row.humidity?.toFixed(1)}%</td>
-                    <td className="py-2.5 px-3 text-amber-400 font-bold">{row.heat_index?.toFixed(1)}°C</td>
-                    <td className="py-2.5 px-3 text-slate-300">{row.temp_probe_ds18?.toFixed(1)}°C</td>
-                    <td className="py-2.5 px-3 text-slate-300">{row.temp_ir_object?.toFixed(1)}°C</td>
-                    <td className="py-2.5 px-3 text-yellow-300">{row.solar_lux?.toLocaleString()} lx</td>
-                    <td className="py-2.5 px-3 text-emerald-400">{row.sensor_confidence?.toFixed(0)}%</td>
-                    <td className="py-2.5 px-3">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                        row.risk_level === "DANGER" || row.risk_level === "EXTREME_DANGER"
-                          ? "bg-red-500/20 text-red-400 border border-red-500/30"
-                          : "bg-emerald-500/20 text-emerald-400"
-                      }`}>
-                        {row.risk_level}
-                      </span>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={9} className="py-8 text-center text-slate-500">
-                    No historical logs matching query.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
     </div>
   );
 }
-

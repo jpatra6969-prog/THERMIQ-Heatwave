@@ -108,36 +108,6 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             );
           })}
         </div>
-
-        {/* Footer Edge Status Card */}
-        <div className="p-3 border-t border-[#1D2F40]">
-          <div className="p-3 rounded-none border border-[#1D2F40] bg-[#0D141F]">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-mono font-semibold flex items-center gap-1.5 text-[#00D9E8]">
-                <span className="w-2 h-2 rounded-none bg-[#00D9E8]" />
-                Arduino UNO Q Edge
-              </span>
-              <span className="text-[10px] font-mono rounded-none px-1.5 py-0.5 text-[#10b981] bg-[rgba(16,185,129,0.1)] border border-[rgba(16,185,129,0.25)]">
-                ARM CORTEX
-              </span>
-            </div>
-
-            <div className="space-y-1 text-[11px] font-mono text-[#D0D9E2]">
-              <div className="flex justify-between">
-                <span>Confidence:</span>
-                <span className="font-bold text-[#00D9E8]">{data?.confidence?.score ?? 96.5}%</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Modem:</span>
-                <span className="text-[#10b981]">EC200U LTE</span>
-              </div>
-              <div className="flex justify-between">
-                <span>HMI Display:</span>
-                <span className="text-[#00AFCB]">7&quot; Touch Active</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </aside>
     </>
   );

@@ -334,19 +334,6 @@ def get_heat_hotspots():
                 "status": "PROTECTED",
                 "risk": "SAFE",
                 "sensors": ["BME280"]
-            },
-            {
-                "id": "zone-perimeter-fence",
-                "name": "Perimeter Heat Perimeter Station",
-                "type": "OUTDOOR",
-                "lat": 28.6148,
-                "lng": 77.2082,
-                "current_temp": round(t.get("temp_ambient", 33.5) + 0.8, 1),
-                "heat_index": round(hi + 1.1, 1),
-                "solar_lux": 16200,
-                "status": "MONITORING",
-                "risk": "EXTREME_CAUTION",
-                "sensors": ["MLX90614", "VEML7700"]
             }
         ]
     }
