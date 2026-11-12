@@ -323,19 +323,6 @@ def get_heat_hotspots():
         "center_coordinates": {"lat": 28.6139, "lng": 77.2090}, # Geo location (e.g. New Delhi / Desert zone)
         "zones": [
             {
-                "id": "zone-uno-q-core",
-                "name": "Arduino UNO Q Primary Node (Solar Canopy)",
-                "type": "OUTDOOR",
-                "lat": 28.6142,
-                "lng": 77.2094,
-                "current_temp": t.get("temp_ambient", 33.5),
-                "heat_index": hi,
-                "solar_lux": t.get("solar_lux", 14500),
-                "status": "MONITORING",
-                "risk": state.get("forecasting", {}).get("current", {}).get("risk_level", "WARNING"),
-                "sensors": ["BME280", "BME688", "MLX90614", "VEML7700", "DS18B20"]
-            },
-            {
                 "id": "zone-esp32-enclosure",
                 "name": "ESP32 Sub-Node (Trapped Machine Enclosure)",
                 "type": "INDOOR",

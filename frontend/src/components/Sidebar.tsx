@@ -32,9 +32,6 @@ const navItems = [
   { href: "/heat-map", label: "Heat Map", icon: MapPin, badge: null },
   { href: "/adaptive-protection", label: "Adaptive Protection", icon: Fan, badge: null },
   { href: "/analytics", label: "Analytics & Reports", icon: BarChart3, badge: null },
-  { href: "/alert-center", label: "Alert Center", icon: AlertTriangle, badge: "ALERT" },
-  { href: "/device-management", label: "Device Management", icon: HardDrive, badge: "UNO Q" },
-  { href: "/simulation-lab", label: "Simulation Lab", icon: FlaskConical, badge: "LAB" },
   { href: "/research-about", label: "Research & About", icon: BookOpen, badge: null },
 ];
 

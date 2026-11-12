@@ -74,10 +74,10 @@ export default function AdaptiveProtectionPage() {
       </div>
 
       {/* Actuator Control Console Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="w-full">
         
-        {/* Animated Fan Blade Visualizer & Direct Control (2 Cols) */}
-        <div className="lg:col-span-2 glass-panel rounded-3xl p-6 sm:p-8 border-cyan-500/30 space-y-6 flex flex-col justify-between">
+        {/* Animated Fan Blade Visualizer & Direct Control */}
+        <div className="glass-panel rounded-3xl p-6 sm:p-8 border-cyan-500/30 space-y-6 flex flex-col justify-between">
           
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
             <div>
@@ -194,70 +194,6 @@ export default function AdaptiveProtectionPage() {
           <div className="text-xs font-mono text-slate-400 pt-3 border-t border-slate-800 flex items-center justify-between">
             <span>Hardware Failsafe: Hardwired Low-Side MOSFET on GPIO D9</span>
             <span className="text-emerald-400">No Thermal Throttle Detected</span>
-          </div>
-
-        </div>
-
-        {/* NIOSH / OSHA Safety Protocol Card (1 Col) */}
-        <div className="glass-panel rounded-3xl p-6 border-cyan-500/30 space-y-6 flex flex-col justify-between">
-          
-          <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <span className="text-xs font-mono uppercase text-cyan-400 tracking-wider">
-                Regulatory Safety Protocol
-              </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                {recs?.protocol_status || "ACTIVE"}
-              </span>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-bold text-white">OSHA Mandatory Schedule</h3>
-              <div className="p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/30 mt-2 space-y-1">
-                <span className="text-[10px] font-mono text-slate-400 uppercase">Enforced Work-Rest Cycle</span>
-                <div className="text-base font-bold font-mono text-cyan-300">
-                  {recs?.work_rest_cycle || "30 min Work / 30 min Rest per hour"}
-                </div>
-              </div>
-            </div>
-
-            <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
-              <span className="text-[10px] font-mono text-slate-400 uppercase">Prescribed Electrolyte Hydration</span>
-              <div className="text-xl font-black font-mono text-emerald-400 flex items-center gap-2">
-                <Droplets className="w-5 h-5 text-emerald-400" />
-                <span>{recs?.hydration_intake_ml_hr ?? 800} mL / hr</span>
-              </div>
-            </div>
-
-            {/* Checklist */}
-            <div className="space-y-2">
-              <span className="text-xs font-mono uppercase text-slate-400">Safety Supervisor Checklist</span>
-              <div className="space-y-2">
-                {recs?.action_items?.map((item, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => toggleCheck(idx)}
-                    className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800 hover:border-cyan-500/30 cursor-pointer flex items-start gap-2.5 transition-all"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={!!checklist[idx]}
-                      onChange={() => toggleCheck(idx)}
-                      className="mt-0.5 accent-cyan-400 rounded"
-                    />
-                    <span className={`text-xs ${checklist[idx] ? "line-through text-slate-500" : "text-slate-300"}`}>
-                      {item}
-                    </span>
-                  </div>
-                )) || (
-                  <div className="text-xs text-slate-400">All protocols nominal.</div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-[11px] font-mono text-slate-400">
-            Automated acoustic buzzer alerts will trigger at 10-minute warning milestones over the 7-inch HMI.
           </div>
 
         </div>

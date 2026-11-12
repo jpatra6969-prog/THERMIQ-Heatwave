@@ -49,22 +49,6 @@ export default function HeatMapPage() {
   // Dynamic zones synchronized with live telemetry + GPS coordinates
   const zones: (MapZone & { gridX: number; gridY: number })[] = [
     {
-      id: "zone-1",
-      name: "Solar Canopy Main Station (UNO Q Core)",
-      type: "OUTDOOR",
-      lat: 28.6142,
-      lng: 77.2094,
-      gridX: 28,
-      gridY: 34,
-      temp: baseTemp,
-      heat_index: baseHI,
-      humidity: baseHum,
-      solar_lux: baseLux,
-      risk: data?.forecasting?.current?.risk_level ?? "DANGER",
-      sensors: ["BME280", "BME688", "MLX90614", "VEML7700", "DS18B20"],
-      mcu: "Arduino UNO Q (Dual-Core ARM-M4)",
-    },
-    {
       id: "zone-2",
       name: "Heavy Machinery Enclosure (ESP32 Hub)",
       type: "INDOOR",

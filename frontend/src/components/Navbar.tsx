@@ -77,30 +77,10 @@ export function Navbar({ onToggleSidebar }: NavbarProps) {
 
         {/* Global Live Risk & Mode Status Pills */}
         <div className="hidden md:flex items-center gap-3">
-          {/* Mode Switcher */}
-          <div className="flex items-center p-1 rounded-none bg-[#1E252E] border border-[#2D3A4B]">
-            <button
-              onClick={() => setSystemMode("LIVE_HARDWARE")}
-              className={`px-3 py-1 text-xs font-semibold rounded-none transition-all flex items-center gap-1.5 ${
-                mode === "LIVE_HARDWARE"
-                  ? "bg-[#00D9E8] text-[#06090E]"
-                  : "text-[#D0D9E2] hover:text-[#FAF5EB]"
-              }`}
-            >
-              <Cpu className="w-3.5 h-3.5" />
-              <span>Live Hardware</span>
-            </button>
-            <button
-              onClick={() => setSystemMode("SIMULATION")}
-              className={`px-3 py-1 text-xs font-semibold rounded-none transition-all flex items-center gap-1.5 ${
-                mode === "SIMULATION"
-                  ? "bg-purple-600 text-[#FAF5EB]"
-                  : "text-[#D0D9E2] hover:text-[#FAF5EB]"
-              }`}
-            >
-              <Activity className="w-3.5 h-3.5" />
-              <span>Simulation Lab</span>
-            </button>
+          {/* Hardware Telemetry Status */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-none bg-[#1E252E] border border-[#2D3A4B] text-xs font-semibold text-[#00D9E8]">
+            <Cpu className="w-3.5 h-3.5" />
+            <span>Live Hardware</span>
           </div>
 
           {/* Current Heat Risk Badge */}
@@ -165,20 +145,6 @@ export function Navbar({ onToggleSidebar }: NavbarProps) {
           <div className="hidden lg:block text-xs font-mono text-[#D0D9E2] px-2.5 py-1 rounded-none bg-[#1E252E] border border-[#2D3A4B]">
             {currentTime || "--:--:--"}
           </div>
-
-          {/* Alerts Bell */}
-          <Link
-            href="/alert-center"
-            className="relative p-2 rounded-none bg-[#1E252E] border border-[#2D3A4B] text-[#D0D9E2] hover:text-[#00D9E8] hover:border-[#00D9E8] transition-colors"
-            title="Alert Center"
-          >
-            <Bell className="w-4 h-4" />
-            {unreadAlerts > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-none bg-[#EF233C] px-1 text-[10px] font-bold text-white">
-                {unreadAlerts}
-              </span>
-            )}
-          </Link>
         </div>
 
       </div>
