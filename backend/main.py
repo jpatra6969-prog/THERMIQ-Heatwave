@@ -323,19 +323,6 @@ def get_heat_hotspots():
         "center_coordinates": {"lat": 28.6139, "lng": 77.2090}, # Geo location (e.g. New Delhi / Desert zone)
         "zones": [
             {
-                "id": "zone-esp32-enclosure",
-                "name": "ESP32 Sub-Node (Trapped Machine Enclosure)",
-                "type": "INDOOR",
-                "lat": 28.6136,
-                "lng": 77.2086,
-                "current_temp": round(t.get("temp_ambient", 33.5) + 2.4, 1),
-                "heat_index": round(hi + 3.1, 1),
-                "solar_lux": 420,
-                "status": "HOTSPOT_ALERT",
-                "risk": "DANGER",
-                "sensors": ["SHT31", "BMP280"]
-            },
-            {
                 "id": "zone-worker-shelter",
                 "name": "Evaporative Cooling Worker Shelter",
                 "type": "SHELTER",

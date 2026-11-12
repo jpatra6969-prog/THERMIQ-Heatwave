@@ -28,8 +28,6 @@ import {
 } from "lucide-react";
 import {
   ResponsiveContainer,
-  AreaChart,
-  Area,
   LineChart,
   Line,
   XAxis,
@@ -92,15 +90,6 @@ export default function SimplifiedDashboardPage() {
     { time: "16:00", temp: 20, hi: 24 },
     { time: "18:00", temp: 22, hi: 25 },
     { time: "18:08", temp: 21, hi: 24 },
-  ];
-
-  const defaultEnergyWave = [
-    { time: "10:00", val: 12 },
-    { time: "05:00", val: 68 },
-    { time: "10:00", val: 42 },
-    { time: "10:00", val: 86 },
-    { time: "14:00", val: 64 },
-    { time: "15:00", val: 92 },
   ];
 
   // Running live chart buffer
@@ -353,14 +342,28 @@ export default function SimplifiedDashboardPage() {
 
           </div>
 
-          {/* ================= COLUMN 2 (MIDDLE): Sensor Data + System Health + Energy ================= */}
+          {/* ================= COLUMN 2 (MIDDLE): Sensor Data ================= */}
           <div className="lg:col-span-4 flex flex-col gap-5">
 
-            {/* Top: Sensor Data Multi-line Chart */}
-            <div className="p-5 sm:p-6 rounded-none bg-[#0D141F] border border-[#1D2F40] shadow-lg shadow-black/40">
-              <h3 className="text-base font-bold text-[#FAF5EB] mb-3">Sensor Data</h3>
+            {/* Sensor Data Multi-line Chart */}
+            <div className="p-5 sm:p-6 rounded-none bg-[#0D141F] border border-[#1D2F40] shadow-lg shadow-black/40 flex-1 flex flex-col justify-between min-h-[420px]">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base font-bold text-[#FAF5EB]">Sensor Data</h3>
+                  <div className="flex items-center gap-3 text-xs font-mono">
+                    <span className="flex items-center gap-1.5 text-[#D96226]">
+                      <span className="w-2.5 h-0.5 bg-[#D96226]" />
+                      Heat Index
+                    </span>
+                    <span className="flex items-center gap-1.5 text-[#00D9E8]">
+                      <span className="w-2.5 h-0.5 bg-[#00D9E8]" />
+                      Ambient Temp
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-              <div className="h-56 sm:h-64 w-full pt-1">
+              <div className="flex-1 w-full min-h-[320px] pt-1">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={activeSeries}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#14202B" vertical={false} />
@@ -403,91 +406,20 @@ export default function SimplifiedDashboardPage() {
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-            </div>
 
-            {/* Middle: System Health with Circular Donut Gauge */}
-            <div className="p-5 sm:p-6 rounded-none bg-[#0D141F] border border-[#1D2F40] shadow-lg shadow-black/40">
-              <h3 className="text-base font-bold text-[#FAF5EB]">System Health</h3>
-
-              <div className="flex items-center justify-between mt-4">
-                {/* Left Stat */}
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[#00D9E8] font-bold text-3xl tracking-tighter">||</span>
-                    <span className="text-4xl sm:text-5xl font-black font-mono text-[#00D9E8]">
-                      85%
-                    </span>
-                  </div>
-                  <p className="text-xs font-mono text-[#D0D9E2] mt-1.5">
-                    Optimal Microclimate Status
-                  </p>
-                </div>
-
-                {/* Right SVG Donut Meter */}
-                <div className="relative w-32 h-32 sm:w-36 sm:h-36 flex items-center justify-center">
-                  <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="38"
-                      fill="none"
-                      stroke="#1E252E"
-                      strokeWidth="9"
-                    />
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="38"
-                      fill="none"
-                      stroke="#00D9E8"
-                      strokeWidth="9"
-                      strokeDasharray={2 * Math.PI * 38}
-                      strokeDashoffset={2 * Math.PI * 38 * (1 - 0.85)}
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  <span className="absolute text-2xl font-black font-mono text-[#FAF5EB]">
-                    85
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom: Energy Usage with Equalizer Bars */}
-            <div className="p-5 sm:p-6 rounded-none bg-[#0D141F] border border-[#1D2F40] shadow-lg shadow-black/40">
-              <h3 className="text-base font-bold text-[#FAF5EB]">Energy Usage</h3>
-
-              <div className="flex items-end justify-between mt-4 gap-4">
-                {/* Equalizer Spectrum Bars */}
-                <div className="flex items-end gap-1 sm:gap-1.5 h-16">
-                  {[35, 60, 45, 80, 50, 90, 70, 40, 65, 85, 55, 75, 95, 60, 40, 70, 85, 50].map((h, i) => (
-                    <div
-                      key={i}
-                      className="w-1.5 sm:w-2 bg-[#00D9E8]"
-                      style={{ height: `${h}%`, opacity: 0.6 + (i % 3) * 0.15 }}
-                    />
-                  ))}
-                </div>
-
-                {/* Stat & Progress Underline */}
-                <div className="flex flex-col items-end shrink-0">
-                  <span className="text-3xl sm:text-4xl font-black font-mono text-[#FAF5EB]">
-                    1324 <span className="text-base font-normal text-[#D0D9E2]">W</span>
-                  </span>
-                  <div className="w-32 sm:w-40 h-1.5 bg-[#1E252E] overflow-hidden mt-2">
-                    <div className="w-3/4 h-full bg-[#00D9E8]" />
-                  </div>
-                </div>
+              <div className="flex items-center justify-between text-[11px] font-mono text-[#D0D9E2] border-t border-[#1D2F40] pt-2 mt-2">
+                <span>Realtime Telemetry Sampling</span>
+                <span className="text-[#00D9E8]">Active Feed</span>
               </div>
             </div>
 
           </div>
 
-          {/* ================= COLUMN 3 (RIGHT): Spiderweb Radar Map + Energy Wave ================= */}
+          {/* ================= COLUMN 3 (RIGHT): Spiderweb Radar Map ================= */}
           <div className="lg:col-span-4 flex flex-col gap-5">
 
-            {/* Top: Sensor Network Spiderweb Radar Map */}
-            <div className="p-5 sm:p-6 rounded-none bg-[#0D141F] border border-[#1D2F40] flex flex-col gap-3 shadow-lg shadow-black/40 relative overflow-hidden flex-1">
+            {/* Sensor Network Spiderweb Radar Map */}
+            <div className="p-5 sm:p-6 rounded-none bg-[#0D141F] border border-[#1D2F40] flex flex-col gap-3 shadow-lg shadow-black/40 relative overflow-hidden flex-1 min-h-[420px]">
               <div className="flex items-center justify-between">
                 <h3 className="text-base font-bold text-[#FAF5EB]">Sensor Network</h3>
                 <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-none bg-[#00D9E8]/10 text-[#00D9E8] border border-[#00D9E8]/30">
@@ -586,52 +518,6 @@ export default function SimplifiedDashboardPage() {
               <div className="flex items-center justify-between text-[11px] font-mono text-[#D0D9E2] border-t border-[#1D2F40] pt-2">
                 <span>Mesh Topology: Star-Polygon</span>
                 <span className="text-[#00D9E8]">Lat: 12ms</span>
-              </div>
-            </div>
-
-            {/* Bottom: Energy Usage Smooth Spline Wave Chart */}
-            <div className="p-5 sm:p-6 rounded-none bg-[#0D141F] border border-[#1D2F40] shadow-lg shadow-black/40">
-              <h3 className="text-base font-bold text-[#FAF5EB] mb-3">Energy Usage</h3>
-
-              <div className="h-44 sm:h-52 w-full pt-1">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={defaultEnergyWave}>
-                    <defs>
-                      <linearGradient id="energyWaveGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#00D9E8" stopOpacity={0.4} />
-                        <stop offset="95%" stopColor="#00D9E8" stopOpacity={0.0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#14202B" vertical={false} />
-                    <XAxis
-                      dataKey="time"
-                      stroke="#D0D9E2"
-                      tick={{ fontSize: 10, fill: "#D0D9E2" }}
-                      axisLine={{ stroke: "#1D2F40" }}
-                    />
-                    <YAxis
-                      stroke="#D0D9E2"
-                      tick={{ fontSize: 10, fill: "#D0D9E2" }}
-                      axisLine={{ stroke: "#1D2F40" }}
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "#0D141F",
-                        borderColor: "#1D2F40",
-                        borderRadius: "0px",
-                        color: "#FAF5EB",
-                      }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="val"
-                      stroke="#00D9E8"
-                      strokeWidth={2.5}
-                      fill="url(#energyWaveGrad)"
-                      name="Usage (W)"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
               </div>
             </div>
 

@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   LayoutDashboard,
-  BrainCircuit,
   MapPin,
   Fan,
   BarChart3,
@@ -28,7 +27,6 @@ interface SidebarProps {
 const navItems = [
   { href: "/", label: "Home", icon: Home, badge: null },
   { href: "/command-center", label: "Command Center", icon: LayoutDashboard, badge: "LIVE" },
-  { href: "/ai-intelligence", label: "AI Intelligence", icon: BrainCircuit, badge: "EDGE" },
   { href: "/heat-map", label: "Heat Map", icon: MapPin, badge: null },
   { href: "/adaptive-protection", label: "Adaptive Protection", icon: Fan, badge: null },
   { href: "/analytics", label: "Analytics & Reports", icon: BarChart3, badge: null },

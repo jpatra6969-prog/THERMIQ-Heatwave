@@ -49,22 +49,6 @@ export default function HeatMapPage() {
   // Dynamic zones synchronized with live telemetry + GPS coordinates
   const zones: (MapZone & { gridX: number; gridY: number })[] = [
     {
-      id: "zone-2",
-      name: "Heavy Machinery Enclosure (ESP32 Hub)",
-      type: "INDOOR",
-      lat: 28.6136,
-      lng: 77.2086,
-      gridX: 68,
-      gridY: 26,
-      temp: roundNum(baseTemp + 3.2),
-      heat_index: roundNum(baseHI + 4.5),
-      humidity: roundNum(Math.min(95, baseHum + 5)),
-      solar_lux: 480,
-      risk: "EXTREME_DANGER",
-      sensors: ["SHT31", "BMP280", "K-Type Thermocouple"],
-      mcu: "ESP32-WROOM (ESP-NOW Mesh)",
-    },
-    {
       id: "zone-3",
       name: "Evaporative Cooling Worker Shelter",
       type: "SHELTER",
