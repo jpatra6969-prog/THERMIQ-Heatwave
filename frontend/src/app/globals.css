@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #06090E;
+    --foreground: #FAF5EB;
+    --card: #0D141F;
+    --card-foreground: #FAF5EB;
+    --primary: #00D9E8;
+    --primary-foreground: #06090E;
+    --accent: #00AFCB;
+    --border: #1D2F40;
+    --heat-safe: #10b981;
+    --heat-caution: #eab308;
+    --heat-warning: #D96226;
+    --heat-danger: #ef4444;
+    --heat-extreme: #EF233C;
+    --ink-black: #06090E;
+    --charcoal-grey: #1E252E;
+    --cream: #FAF5EB;
+    --burnt-orange: #D96226;
+    --moonlight-silver: #D0D9E2;
+    --signal-red: #EF233C;
+  }
+}
+
+body {
+  background-color: #06090E;
+  color: #FAF5EB;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Hide scrollbars globally */
+html,
+body,
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+/* Glassmorphism Classes (No glow, sharp square boxes, professional deep ink-black finish) */
+.glass-panel {
+  background: #0D141F;
+  border: 1px solid #1D2F40;
+  border-radius: 0px;
+}
+
+.glass-panel-interactive {
+  background: #0D141F;
+  border: 1px solid #1D2F40;
+  border-radius: 0px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-panel-interactive:hover {
+  border-color: #00D9E8;
+  background: #142233;
+}
+
+.glass-panel-danger {
+  background: rgba(30, 8, 12, 0.9);
+  border: 1px solid rgba(239, 35, 60, 0.45);
+  border-radius: 0px;
+}
+
+/* Professional Color Utilities */
+.text-cream { color: #FAF5EB; }
+.bg-cream { background-color: #FAF5EB; }
+.text-burnt-orange { color: #D96226; }
+.bg-burnt-orange { background-color: #D96226; }
+.border-burnt-orange { border-color: #D96226; }
+.bg-ink-black { background-color: #06090E; }
+.text-ink-black { color: #06090E; }
+.bg-charcoal { background-color: #1E252E; }
+.text-moonlight { color: #D0D9E2; }
+.text-signal-red { color: #EF233C; }
+
+/* Force all boxes, cards, panels, inputs, tabs, and buttons to be square */
+[class*="rounded"]:not(.rounded-full) {
+  border-radius: 0px !important;
+}
+
+/* Cyber Glow Utilities — glows removed */
+.glow-cyan {}
+.glow-cyan-text {}
+.glow-red-text {}
+.glow-amber-text {}
+
+/* Background Grid removed */
+.cyber-grid {
+  background-image: none;
+}
+
+/* Hide Next.js dev indicator badge (the circular 'N' button in the bottom-left) */
+nextjs-portal,
+[data-nextjs-dev-tools],
+[data-nextjs-dev-tools-button],
+#nextjs-dev-tools-button {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Pulsing radar animation */
+@keyframes radar-pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 0.2; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+.animate-radar {
+  animation: radar-pulse 3s infinite ease-in-out;
+}
