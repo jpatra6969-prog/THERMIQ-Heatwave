@@ -185,7 +185,7 @@ export function LeafletMap({ zones, selectedZone, onSelectZone, isFahrenheit, cl
       });
 
       // Fly to selected zone if changed
-      if (selectedZone && map) {
+      if (selectedZone && typeof selectedZone.lat === "number" && !isNaN(selectedZone.lat) && typeof selectedZone.lng === "number" && !isNaN(selectedZone.lng) && map) {
         map.flyTo([selectedZone.lat, selectedZone.lng], 16.5, {
           duration: 1.2,
         });

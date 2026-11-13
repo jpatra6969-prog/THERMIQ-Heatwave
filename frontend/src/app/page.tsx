@@ -52,6 +52,7 @@ export default function SimplifiedDashboardPage() {
 
   const [activeTab, setActiveTab] = useState<"LIVE" | "FORECAST" | "COOLING" | "SIMULATE">("LIVE");
   const [historyData, setHistoryData] = useState<any[]>([]);
+  const [deviceStatusTab, setDeviceStatusTab] = useState<"CHART" | "LIST">("CHART");
 
   // Simple simulator inputs
   const [simTemp, setSimTemp] = useState<number>(33);
@@ -111,15 +112,74 @@ export default function SimplifiedDashboardPage() {
 
   const activeSeries = historyData.length >= 5 ? historyData : defaultSensorSeries;
 
-  // Device Status Bar Chart Mock Items matching the reference image exactly
-  const deviceBars = [
-    { id: "108", height: 35, color: "bg-[#0284c7]", status: "Active" },
-    { id: "108", height: 52, color: "bg-[#00D9E8]", status: "Idle" },
-    { id: "08", height: 88, color: "bg-[#00D9E8]", status: "Idle" },
-    { id: "05", height: 60, color: "bg-[#0284c7]", status: "Active" },
-    { id: "08", height: 75, color: "bg-[#00D9E8]", status: "Idle" },
-    { id: "108", height: 92, color: "bg-[#D96226]", status: "Warning" },
-    { id: "103", height: 68, color: "bg-[#EF233C]", status: "Error" },
+  // Digital Wellbeing style device activity tracking: Present Day (Today) vs Previous Day (Yesterday)
+  const digitalWellbeingDevices = [
+    {
+      id: "UNO-Q",
+      name: "Arduino UNO Q Core Hub",
+      short: "UNO-Q",
+      isActive: true,
+      todayHours: 24.0,
+      yesterdayHours: 23.5,
+      todayPct: 100,
+      yesterdayPct: 98,
+      type: "Master Edge AI",
+    },
+    {
+      id: "BME280",
+      name: "BME280 Ambient Temp/RH",
+      short: "BME280",
+      isActive: true,
+      todayHours: 24.0,
+      yesterdayHours: 24.0,
+      todayPct: 100,
+      yesterdayPct: 100,
+      type: "Transducer",
+    },
+    {
+      id: "DS18B",
+      name: "DS18B20 Immersion Probe",
+      short: "DS18B",
+      isActive: true,
+      todayHours: 22.8,
+      yesterdayHours: 21.0,
+      todayPct: 95,
+      yesterdayPct: 88,
+      type: "Thermal Probe",
+    },
+    {
+      id: "PWM-FAN",
+      name: "Adaptive Cooling Fan PWM",
+      short: "FAN",
+      isActive: true,
+      todayHours: 16.5,
+      yesterdayHours: 14.2,
+      todayPct: 69,
+      yesterdayPct: 59,
+      type: "Cooling Actuator",
+    },
+    {
+      id: "MIST",
+      name: "Misting Solenoid Valve",
+      short: "MIST",
+      isActive: true,
+      todayHours: 8.2,
+      yesterdayHours: 6.0,
+      todayPct: 34,
+      yesterdayPct: 25,
+      type: "Evaporative Relay",
+    },
+    {
+      id: "EC200U",
+      name: "EC200U LTE Cat-1 Modem",
+      short: "LTE",
+      isActive: false,
+      todayHours: 1.5,
+      yesterdayHours: 4.0,
+      todayPct: 6,
+      yesterdayPct: 17,
+      type: "Off-Grid Modem",
+    },
   ];
 
   // Spiderweb Radar Map Sensor Nodes
@@ -286,58 +346,206 @@ export default function SimplifiedDashboardPage() {
 
             </div>
 
-            {/* Bottom: Device Status Bar Chart */}
-            <div className="p-5 sm:p-6 rounded-none bg-[#0D141F] border border-[#1D2F40] flex flex-col gap-4 shadow-lg shadow-black/40 flex-1 min-h-[320px]">
-              <h3 className="text-base font-bold text-[#FAF5EB]">Device Status</h3>
-
-              {/* Bar Chart Area */}
-              <div className="flex items-end gap-2 flex-1 pb-2">
-                {/* Y-axis labels */}
-                <div className="flex flex-col justify-between h-full text-[10px] font-mono text-[#D0D9E2] pb-6 shrink-0">
-                  <span>10</span>
-                  <span>5</span>
-                  <span>0</span>
+            {/* Bottom: Device Status - Digital Wellbeing Activity Tracking (Present Day vs Previous Day) */}
+            <div className="p-5 sm:p-6 rounded-none bg-[#0D141F] border border-[#1D2F40] flex flex-col gap-4 shadow-lg shadow-black/40 flex-1 min-h-[350px]">
+              
+              {/* Header with Title & View Switcher */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1D2F40] pb-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-bold text-[#FAF5EB]">Device Status</h3>
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-none bg-[#00D9E8]/10 text-[#00D9E8] border border-[#00D9E8]/30">
+                      5/6 ACTIVE
+                    </span>
+                  </div>
+                  <p className="text-[11px] font-mono text-[#D0D9E2] mt-0.5">
+                    Digital Wellbeing Activity: Present Day vs Previous Day
+                  </p>
                 </div>
 
-                {/* Bars + x-axis labels */}
-                <div className="flex-1 flex flex-col h-full">
-                  <div className="flex-1 flex items-end justify-around border-b border-[#1D2F40] gap-2 pb-2">
-                    {deviceBars.map((b, idx) => (
-                      <div key={idx} className="flex flex-col items-center gap-1 h-full justify-end">
-                        <div
-                          className={`w-7 sm:w-10 lg:w-12 rounded-none transition-all duration-500 ${b.color}`}
-                          style={{ height: `${b.height}%` }}
-                        />
+                {/* Switcher Button: Paired Chart vs Detailed List */}
+                <div className="flex items-center p-0.5 rounded-none bg-[#06090E] border border-[#1D2F40] text-[10px] font-mono self-start sm:self-auto">
+                  <button
+                    onClick={() => setDeviceStatusTab("CHART")}
+                    className={`px-2.5 py-1 rounded-none transition-all ${
+                      deviceStatusTab === "CHART"
+                        ? "bg-[#00D9E8] text-[#06090E] font-bold"
+                        : "text-[#D0D9E2] hover:text-[#FAF5EB]"
+                    }`}
+                  >
+                    Comparison Chart
+                  </button>
+                  <button
+                    onClick={() => setDeviceStatusTab("LIST")}
+                    className={`px-2.5 py-1 rounded-none transition-all ${
+                      deviceStatusTab === "LIST"
+                        ? "bg-[#00D9E8] text-[#06090E] font-bold"
+                        : "text-[#D0D9E2] hover:text-[#FAF5EB]"
+                    }`}
+                  >
+                    Device List
+                  </button>
+                </div>
+              </div>
+
+              {/* Digital Wellbeing Summary Stat Banner */}
+              <div className="flex items-center justify-between px-3 py-2 rounded-none bg-[#06090E] border border-[#1D2F40] text-xs font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="text-[#00D9E8] font-bold">Present Day:</span>
+                  <span className="text-[#FAF5EB] font-black">16.2h avg uptime</span>
+                  <span className="text-[10px] text-emerald-400 font-semibold px-1.5 py-0.2 rounded-none bg-emerald-500/10 border border-emerald-500/20">
+                    ▲ +4.5% vs Prev Day
+                  </span>
+                </div>
+                <div className="text-[10px] text-[#D0D9E2]">
+                  Previous Day: <span className="text-[#FAF5EB] font-semibold">15.5h avg</span>
+                </div>
+              </div>
+
+              {deviceStatusTab === "CHART" ? (
+                /* VIEW 1: Digital Wellbeing Paired Bar Chart */
+                <div className="flex flex-col flex-1 justify-between gap-3 pt-1">
+                  
+                  {/* Paired Bar Chart Area */}
+                  <div className="flex items-end gap-2 flex-1 pb-1 min-h-[170px]">
+                    {/* Y-axis labels */}
+                    <div className="flex flex-col justify-between h-full text-[10px] font-mono text-[#D0D9E2] pb-6 shrink-0">
+                      <span>24h</span>
+                      <span>16h</span>
+                      <span>8h</span>
+                      <span>0h</span>
+                    </div>
+
+                    {/* Bars Container */}
+                    <div className="flex-1 flex flex-col h-full">
+                      <div className="flex-1 flex items-end justify-around border-b border-[#1D2F40] gap-2 pb-2">
+                        {digitalWellbeingDevices.map((d, idx) => (
+                          <div 
+                            key={idx} 
+                            className="flex flex-col items-center gap-1.5 h-full justify-end group cursor-pointer"
+                            title={`${d.name}: Today ${d.todayHours}h (${d.isActive ? 'ACTIVE' : 'INACTIVE'}), Yesterday ${d.yesterdayHours}h`}
+                          >
+                            {/* Paired Bars: Left = Previous Day, Right = Present Day */}
+                            <div className="flex items-end gap-1 h-full">
+                              {/* Left Bar: Previous Day (Yesterday) */}
+                              <div
+                                className="w-3.5 sm:w-4 lg:w-5 rounded-none bg-[#1E252E] border border-[#334155] group-hover:bg-[#2A3B4D] transition-all duration-300 relative"
+                                style={{ height: `${d.yesterdayPct}%` }}
+                              >
+                                <span className="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] font-mono text-[#D0D9E2] bg-[#06090E] px-1 border border-[#1D2F40] whitespace-nowrap z-20">
+                                  Prev: {d.yesterdayHours}h
+                                </span>
+                              </div>
+
+                              {/* Right Bar: Present Day (Today) */}
+                              <div
+                                className={`w-3.5 sm:w-4 lg:w-5 rounded-none transition-all duration-300 relative ${
+                                  d.isActive 
+                                    ? "bg-[#00D9E8] shadow-[0_0_8px_rgba(0,217,232,0.35)]" 
+                                    : "bg-[#EF233C]/40 border border-[#EF233C]"
+                                }`}
+                                style={{ height: `${d.todayPct}%` }}
+                              >
+                                <span className="hidden group-hover:block absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] font-mono text-[#00D9E8] bg-[#06090E] px-1 border border-[#1D2F40] whitespace-nowrap z-20">
+                                  Pres: {d.todayHours}h ({d.isActive ? 'ACTIVE' : 'OFF'})
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                  <div className="flex justify-around pt-1.5">
-                    {deviceBars.map((b, idx) => (
-                      <span key={idx} className="text-[10px] font-mono text-[#D0D9E2] text-center">{b.id}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
 
-              {/* Status Legend */}
-              <div className="flex items-center gap-4 text-xs text-[#D0D9E2]">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#0284c7]" />
-                  <span>Active</span>
+                      {/* X-axis labels + Digital Wellbeing Active / Inactive Badge */}
+                      <div className="flex justify-around pt-2">
+                        {digitalWellbeingDevices.map((d, idx) => (
+                          <div key={idx} className="flex flex-col items-center gap-1">
+                            <span className="text-[10px] font-mono font-bold text-[#D0D9E2] text-center">{d.short}</span>
+                            <span className={`text-[8px] font-mono font-bold px-1 py-0.2 rounded-none flex items-center gap-1 ${
+                              d.isActive 
+                                ? "text-[#00D9E8] bg-[#00D9E8]/10 border border-[#00D9E8]/30" 
+                                : "text-[#EF233C] bg-[#EF233C]/10 border border-[#EF233C]/30"
+                            }`}>
+                              <span className={`w-1.5 h-1.5 rounded-full ${d.isActive ? "bg-[#00D9E8] animate-pulse" : "bg-[#EF233C]"}`} />
+                              {d.isActive ? "ACTIVE" : "OFF"}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Chart Legend */}
+                  <div className="flex flex-wrap items-center justify-between text-[11px] font-mono text-[#D0D9E2] border-t border-[#1D2F40] pt-2">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 rounded-none bg-[#1E252E] border border-[#334155]" />
+                        <span>Previous Day</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 rounded-none bg-[#00D9E8]" />
+                        <span className="text-[#FAF5EB] font-bold">Present Day</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <span className="flex items-center gap-1 text-[#00D9E8]">
+                        <span className="w-2 h-2 rounded-full bg-[#00D9E8]" />
+                        Active
+                      </span>
+                      <span className="flex items-center gap-1 text-[#EF233C]">
+                        <span className="w-2 h-2 rounded-full bg-[#EF233C]" />
+                        Inactive
+                      </span>
+                    </div>
+                  </div>
+
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#00D9E8]" />
-                  <span>Idle</span>
+              ) : (
+                /* VIEW 2: Digital Wellbeing Device Status List */
+                <div className="flex flex-col gap-2.5 overflow-y-auto max-h-[220px] pr-1">
+                  {digitalWellbeingDevices.map((d, idx) => (
+                    <div key={idx} className="p-2.5 rounded-none bg-[#06090E] border border-[#1D2F40] space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className={`w-2 h-2 rounded-full ${d.isActive ? "bg-[#00D9E8] animate-pulse" : "bg-[#EF233C]"}`} />
+                          <span className="text-xs font-mono font-bold text-[#FAF5EB]">{d.name}</span>
+                          <span className="text-[10px] font-mono text-[#D0D9E2]">({d.type})</span>
+                        </div>
+                        <span className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded-none ${
+                          d.isActive
+                            ? "bg-[#00D9E8]/10 text-[#00D9E8] border border-[#00D9E8]/30"
+                            : "bg-[#EF233C]/10 text-[#EF233C] border border-[#EF233C]/30"
+                        }`}>
+                          {d.isActive ? "ACTIVE NOW" : "INACTIVE"}
+                        </span>
+                      </div>
+
+                      {/* Comparative Digital Wellbeing Usage Progress Bar */}
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-[10px] font-mono text-[#D0D9E2]">
+                          <span>Present Day: <strong className={d.isActive ? "text-[#00D9E8]" : "text-[#D0D9E2]"}>{d.todayHours}h</strong> ({d.todayPct}%)</span>
+                          <span>Previous Day: <strong className="text-[#D0D9E2]">{d.yesterdayHours}h</strong> ({d.yesterdayPct}%)</span>
+                        </div>
+                        <div className="w-full bg-[#1E252E] h-2 rounded-none overflow-hidden relative">
+                          {/* Ghost bar for yesterday */}
+                          <div 
+                            className="bg-[#384c60] h-full absolute top-0 left-0"
+                            style={{ width: `${d.yesterdayPct}%` }}
+                          />
+                          {/* Active bar for today */}
+                          <div 
+                            className={`h-full absolute top-0 left-0 transition-all duration-500 ${
+                              d.isActive ? "bg-[#00D9E8]" : "bg-[#EF233C]/60"
+                            }`}
+                            style={{ width: `${d.todayPct}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#D96226]" />
-                  <span>Warning</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#EF233C]" />
-                  <span>Error</span>
-                </div>
-              </div>
+              )}
+
             </div>
 
           </div>
