@@ -323,17 +323,17 @@ def get_heat_hotspots():
         "center_coordinates": {"lat": 28.6139, "lng": 77.2090}, # Geo location (e.g. New Delhi / Desert zone)
         "zones": [
             {
-                "id": "zone-worker-shelter",
-                "name": "Evaporative Cooling Worker Shelter",
-                "type": "SHELTER",
-                "lat": 28.6133,
-                "lng": 77.2098,
-                "current_temp": round(max(24.0, t.get("temp_ambient", 33.5) - 6.5), 1),
-                "heat_index": round(max(25.0, hi - 8.2), 1),
-                "solar_lux": 850,
-                "status": "PROTECTED",
-                "risk": "SAFE",
-                "sensors": ["BME280"]
+                "id": "zone-transformer-vault",
+                "name": "Electrical Transformer Vault",
+                "type": "CONFINED",
+                "lat": 28.6130,
+                "lng": 77.2088,
+                "current_temp": round(t.get("temp_ambient", 33.5) + 4.5, 1),
+                "heat_index": round(hi + 5.1, 1),
+                "solar_lux": 150,
+                "status": "HOTSPOT_ALERT",
+                "risk": "EXTREME_DANGER",
+                "sensors": ["DS18B20", "BME688 VOC"]
             }
         ]
     }

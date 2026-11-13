@@ -23,9 +23,10 @@ interface LeafletMapProps {
   selectedZone: MapZone | null;
   onSelectZone: (zone: MapZone) => void;
   isFahrenheit: boolean;
+  className?: string;
 }
 
-export function LeafletMap({ zones, selectedZone, onSelectZone, isFahrenheit }: LeafletMapProps) {
+export function LeafletMap({ zones, selectedZone, onSelectZone, isFahrenheit, className }: LeafletMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersRef = useRef<{ [key: string]: any }>({});
@@ -63,6 +64,9 @@ export function LeafletMap({ zones, selectedZone, onSelectZone, isFahrenheit }: 
       }
 
       const map = mapInstanceRef.current;
+      setTimeout(() => {
+        try { map.invalidateSize(); } catch {}
+      }, 150);
 
       // Clear existing markers/circles
       Object.values(markersRef.current).forEach((m: any) => map.removeLayer(m));
@@ -195,21 +199,21 @@ export function LeafletMap({ zones, selectedZone, onSelectZone, isFahrenheit }: 
   }, [zones, selectedZone, onSelectZone, isFahrenheit]);
 
   return (
-    <div className="relative w-full h-[450px] rounded-2xl overflow-hidden border border-cyan-500/30">
+    <div className={className || "relative w-full h-[620px] sm:h-[680px] lg:h-[720px] rounded-none overflow-hidden border border-[#1D2F40]"}>
       <div ref={mapContainerRef} className="w-full h-full z-10" />
       <style jsx global>{`
         .heatguard-leaflet-popup .leaflet-popup-content-wrapper {
-          background: #0b1120 !important;
-          border: 1px solid rgba(6, 182, 212, 0.4) !important;
-          border-radius: 12px !important;
-          box-shadow: 0 0 20px rgba(6, 182, 212, 0.25) !important;
+          background: #0D141F !important;
+          border: 1px solid #1D2F40 !important;
+          border-radius: 0px !important;
+          box-shadow: 0 0 25px rgba(0, 0, 0, 0.8) !important;
         }
         .heatguard-leaflet-popup .leaflet-popup-tip {
-          background: #0b1120 !important;
-          border: 1px solid rgba(6, 182, 212, 0.4) !important;
+          background: #0D141F !important;
+          border: 1px solid #1D2F40 !important;
         }
         .leaflet-container {
-          background-color: #050811 !important;
+          background-color: #06090E !important;
         }
       `}</style>
     </div>
